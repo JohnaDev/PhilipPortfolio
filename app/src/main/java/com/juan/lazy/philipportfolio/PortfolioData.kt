@@ -23,17 +23,30 @@ object PortfolioProvider {
     val location = "Davao City, Philippines"
     val email = "johnphilipagustino@gmail.com"
     val phone = "+63 9399353004"
-    
-    val aboutMe = "Experienced Android Developer with a strong background in building and maintaining native Android applications and mobile games. Skilled in Kotlin, Java, Jetpack Compose, and modern Android frameworks. Passionate about crafting high quality, maintainable, and user centered apps from healthcare solutions to mobile games."
-    
+
+    val aboutMe =
+        "Experienced Android Developer with a strong background in building and maintaining native Android applications and mobile games. Skilled in Kotlin, Java, Jetpack Compose, and modern Android frameworks. Passionate about crafting high quality, maintainable, and user centered apps from healthcare solutions to mobile games."
+
     val skills = mapOf(
         "Languages" to listOf("Kotlin", "Java", "Lua"),
-        "Frameworks & Tools" to listOf("Android SDK", "Jetpack Compose", "Firebase", "Retrofit", "Glide", "MVVM"),
+        "Frameworks & Tools" to listOf(
+            "Android SDK",
+            "Jetpack Compose",
+            "Firebase",
+            "Retrofit",
+            "Glide",
+            "MVVM"
+        ),
         "Project Management" to listOf("Jira", "Trello", "OpenProject"),
         "Build & Version Control" to listOf("Gradle", "Git", "GitHub"),
-        "Core Concepts" to listOf("RESTful APIs", "CI/CD", "Material Design", "Unit Testing (JUnit, Espresso)")
+        "Core Concepts" to listOf(
+            "RESTful APIs",
+            "CI/CD",
+            "Material Design",
+            "Unit Testing (JUnit, Espresso)"
+        )
     )
-    
+
     val projects = listOf(
         Project(
             title = "Little Ones",
@@ -100,53 +113,75 @@ object PortfolioProvider {
             link = "https://www.amazon.com/Larry-Hall-Machado-Tilt-Toby-Lite/dp/B00GXZSJ1S"
         )
     )
-    
+
     val experiences = listOf(
+        Experience(
+            role = "Android Developer",
+            company = "Feiwin",
+            period = "December 2025 – May 2026",
+            highlights = listOf(
+                "Built and maintained the frontend of web based gaming and chat applications using Kotlin and Jetpack Compose.",
+                "Leveraged Ktor for networking, GitLab CI/CD for automated deployment pipelines, and Fastlane for build and release automation."
+            )
+        ),
         Experience(
             role = "Senior Android Developer",
             company = "Dev Partners",
-            period = "2018 – Present",
+            period = "June 2018 – December 2025",
             highlights = listOf(
-                "Modernized apps with Jetpack Compose and improved CI/CD efficiency.",
-                "Mentored junior developers on architecture and testing best practices."
+                "Developed and maintained Android applications using Kotlin, Java, and XML, modernizing legacy code with Jetpack Compose.",
+                "Integrated Firebase for analytics, authentication, and cloud-based data synchronization.",
+                "Refactored and optimized codebases for performance, scalability, and maintainability.",
+                "Implemented CI/CD pipelines with Git and GitHub Actions for efficient testing and deployment.",
+                "Mentored team members and advocated for clean architecture and best coding practices."
             )
         ),
         Experience(
             role = "Android Developer",
             company = "Bywave",
-            period = "2015 – 2018",
+            period = "May 2015 – June 2018",
             highlights = listOf(
-                "Integrated Bluetooth heart rate monitor connectivity and REST APIs.",
-                "Implemented Material Design UIs and SQLite data handling.",
-                "Built Android TV apps for F45 Training with Bluetooth device integration."
+                "Developed Android applications primarily in Java using the Android SDK and XML-based UI layouts.",
+                "Implemented Bluetooth connectivity to pair with heart rate monitors for real-time health tracking.",
+                "Integrated RESTful APIs, SQLite, and JSON for data storage and communication.",
+                "Applied Material Design standards for improved usability and visual consistency.",
+                "Mentored junior developers, providing guidance on coding standards, version control, and debugging.",
+                "Conducted app performance tuning and implemented unit testing to enhance reliability."
             )
         ),
         Experience(
             role = "Android Developer",
-            company = "Note-e-fied Inc.",
-            period = "2014 – 2015",
+            company = "Note-e-fied Incorporated",
+            period = "July 2014 – September 2015",
             highlights = listOf(
-                "Built healthcare focused Android apps that follows HIPAA compliance."
+                "Developed Android applications for healthcare and hospice management, supporting home visits and patient documentation.",
+                "Focused on data security, offline functionality, and synchronization for reliable field use.",
+                "Collaborated with product and QA teams to ensure compliance with healthcare requirements and user experience goals."
             )
         ),
         Experience(
             role = "Android Developer",
             company = "Data Soft Logic",
-            period = "2014",
+            period = "January 2014 – May 2014",
             highlights = listOf(
-                "Developed secure, enterprise grade Android apps with API integration."
+                "Developed Android applications for enterprise and healthcare solutions, focusing on data integrity and security.",
+                "Used Retrofit and Gson for API integration and JSON data handling.",
+                "Assisted in updating applications to comply with newer Android SDK releases and design guidelines."
             )
         ),
         Experience(
-            role = "Lead Mobile Game Developer",
+            role = "Lead Mobile App/Game Developer",
             company = "8appstudio",
-            period = "2012 – 2013",
+            period = "June 2012 – November 2013",
             highlights = listOf(
-                "Led mobile game projects using Corona SDK and Android SDK."
+                "Led mobile app and game development projects using Android SDK and Corona SDK frameworks.",
+                "Designed and developed engaging mobile games with smooth performance and intuitive gameplay.",
+                "Directed a small development team, defining workflows, coding standards, and version control practices."
             )
         )
     )
-    
-    val education = "Bachelor of Science in Computer Science - Notre Dame University of Cotabato 2012"
+
+    val education =
+        "Bachelor of Science in Computer Science - Notre Dame University of Cotabato 2012"
     val languages = listOf("English: Fluent", "Filipino: Fluent")
 }

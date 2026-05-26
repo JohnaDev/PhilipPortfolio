@@ -8,6 +8,8 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -24,17 +26,20 @@ class MainActivity : ComponentActivity() {
         PortfolioViewModelFactory(FakePortfolioRepository())
     }
 
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             PhilipPortfolioTheme {
+                val windowSize = calculateWindowSizeClass(this)
                 // Collecting state from ViewModel
                 val uiState by viewModel.uiState.collectAsState()
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     PortfolioScreen(
                         uiState = uiState,
+                        windowSize = windowSize,
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
