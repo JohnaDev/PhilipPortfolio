@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.juan.lazy.philipportfolio.model.AppTheme
 import com.juan.lazy.philipportfolio.model.Experience
 import com.juan.lazy.philipportfolio.ui.theme.PhilipPortfolioTheme
 import com.juan.lazy.philipportfolio.ui.theme.PortfolioTheme
@@ -112,6 +113,56 @@ fun ExperienceCard(experience: Experience) {
                     }
                 }
             }
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Light Theme")
+@Composable
+fun ExperienceCardLightPreview() {
+    PhilipPortfolioTheme(appTheme = AppTheme.LIGHT) {
+        Box(
+            modifier = Modifier
+                .background(PortfolioTheme.colors.background)
+                .padding(16.dp)
+        ) {
+            ExperienceCard(
+                experience = Experience(
+                    role = "Senior Android Developer",
+                    company = "Tech Solutions Inc.",
+                    period = "January 2020 - Present • 4 years and 2 months",
+                    highlights = listOf(
+                        "Developed and maintained high-quality Android applications using Kotlin and Jetpack Compose.",
+                        "Implemented modern architectural patterns (MVVM, Clean Architecture) to ensure scalability.",
+                        "Mentored junior developers and conducted thorough code reviews."
+                    )
+                )
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Dark Theme")
+@Composable
+fun ExperienceCardDarkPreview() {
+    PhilipPortfolioTheme(appTheme = AppTheme.DARK) {
+        Box(
+            modifier = Modifier
+                .background(PortfolioTheme.colors.background)
+                .padding(16.dp)
+        ) {
+            ExperienceCard(
+                experience = Experience(
+                    role = "Android Developer",
+                    company = "Innovation Labs",
+                    period = "June 2018 - December 2020 • 2 years and 7 months",
+                    highlights = listOf(
+                        "Collaborated with cross-functional teams to define, design, and ship new features.",
+                        "Optimized app performance and reduced crash rates by 30% through proactive debugging.",
+                        "Integrated third-party APIs and libraries for enhanced functionality."
+                    )
+                )
+            )
         }
     }
 }

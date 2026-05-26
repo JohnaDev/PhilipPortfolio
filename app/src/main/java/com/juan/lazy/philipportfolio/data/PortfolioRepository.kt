@@ -3,6 +3,7 @@ package com.juan.lazy.philipportfolio.data
 import android.content.Context
 import com.juan.lazy.philipportfolio.data.local.PortfolioDao
 import com.juan.lazy.philipportfolio.data.local.PortfolioEntity
+import com.juan.lazy.philipportfolio.model.EmploymentPeriod
 import com.juan.lazy.philipportfolio.model.Experience
 import com.juan.lazy.philipportfolio.model.PortfolioData
 import com.juan.lazy.philipportfolio.model.PortfolioUiState
@@ -116,7 +117,7 @@ class NetworkPortfolioRepository(
                 Experience(
                     role = exp.position,
                     company = exp.company,
-                    period = "${exp.employmentPeriod.start} – ${exp.employmentPeriod.end}",
+                    period = formatFullPeriod(exp.employmentPeriod),
                     highlights = exp.responsibilities
                 )
             },
@@ -125,5 +126,91 @@ class NetworkPortfolioRepository(
             } ?: "",
             languages = data.languages.map { "${it.language}: ${it.proficiency}" }
         )
+    }
+
+    private fun formatFullPeriod(period: EmploymentPeriod): String {
+        val dateRange = "${formatDate(period.start)} – ${formatDate(period.end)}"
+        val duration = calculateDuration(period.start, period.end)
+        return if (duration.isNotEmpty()) "$dateRange • $duration" else dateRange
+    }
+
+    private fun formatDate(dateStr: String): String {
+        if (dateStr.lowercase() == "present") return "Present"
+        return try {
+            val parts = dateStr.split("-")
+            if (parts.size == 2) {
+                val year = parts[0]
+                val month = parts[1].toInt()
+                val monthName = when (month) {
+                    1 -> "January"
+                    2 -> "February"
+                    3 -> "March"
+                    4 -> "April"
+                    5 -> "May"
+                    6 -> "June"
+                    7 -> "July"
+                    8 -> "August"
+                    9 -> "September"
+                    10 -> "October"
+                    11 -> "November"
+                    12 -> "December"
+                    else -> ""
+                }
+                if (monthName.isNotEmpty()) "$monthName $year" else dateStr
+            } else {
+                dateStr
+            }
+        } catch (e: Exception) {
+            dateStr
+        }
+    }
+
+    private fun calculateDuration(start: String, end: String): String {
+        return try {
+            val startParts = start.split("-")
+            val endParts = if (end.lowercase() == "present" || end.isEmpty()) {
+                val now = java.util.Calendar.getInstance()
+                listOf(now.get(java.util.Calendar.YEAR).toString(), (now.get(java.util.Calendar.MONTH) + 1).toString())
+            } else {
+                end.split("-")
+            }
+
+            if (startParts.size >= 2 && endParts.size >= 2) {
+                val startYear = startParts[0].toInt()
+                val startMonth = startParts[1].toInt()
+                val endYear = endParts[0].toInt()
+                val endMonth = endParts[1].toInt()
+
+                var totalMonths = (endYear - startYear) * 12 + (endMonth - startMonth) + 1
+                
+                if (totalMonths < 0) totalMonths = 0
+
+                val years = totalMonths / 12
+                val months = totalMonths % 12
+
+                val yearStr = when {
+                    years == 1 -> "1 year"
+                    years > 1 -> "$years years"
+                    else -> ""
+                }
+
+                val monthStr = when {
+                    months == 1 -> "1 month"
+                    months > 1 -> "$months months"
+                    else -> ""
+                }
+
+                when {
+                    yearStr.isNotEmpty() && monthStr.isNotEmpty() -> "$yearStr and $monthStr"
+                    yearStr.isNotEmpty() -> yearStr
+                    monthStr.isNotEmpty() -> monthStr
+                    else -> "Less than a month"
+                }
+            } else {
+                ""
+            }
+        } catch (e: Exception) {
+            ""
+        }
     }
 }
