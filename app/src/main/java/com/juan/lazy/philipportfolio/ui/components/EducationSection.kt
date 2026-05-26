@@ -11,40 +11,25 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.juan.lazy.philipportfolio.ui.theme.AccentTertiary
-import com.juan.lazy.philipportfolio.ui.theme.CardBackground
 import com.juan.lazy.philipportfolio.ui.theme.PhilipPortfolioTheme
+import com.juan.lazy.philipportfolio.ui.theme.PortfolioTheme
 
 @Composable
 fun EducationSection(education: String) {
     Surface(
-        color = CardBackground,
+        color = PortfolioTheme.colors.cardBackground,
         shape = RoundedCornerShape(24.dp),
-        border = BorderStroke(1.dp, AccentTertiary.copy(alpha = 0.2f)),
+        border = BorderStroke(1.dp, PortfolioTheme.colors.accentTertiary.copy(alpha = 0.2f)),
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
             text = education,
-            style = MaterialTheme.typography.bodyLarge,
-            color = AccentTertiary,
+            style = MaterialTheme.typography.bodyMedium,
+            color = PortfolioTheme.colors.accentTertiary,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(24.dp)
+            modifier = Modifier.padding(20.dp)
         )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun EducationSectionPreview() {
-    PhilipPortfolioTheme {
-        Box(modifier = Modifier.background(Color(0xFF0F172A)).padding(16.dp)) {
-            EducationSection(
-                education = "Bachelor of Science in Computer Science - Notre Dame University 2012"
-            )
-        }
     }
 }

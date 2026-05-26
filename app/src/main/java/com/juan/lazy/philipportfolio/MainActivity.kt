@@ -13,7 +13,8 @@ import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.juan.lazy.philipportfolio.data.FakePortfolioRepository
+import com.juan.lazy.philipportfolio.data.NetworkPortfolioRepository
+import com.juan.lazy.philipportfolio.data.local.PortfolioDatabase
 import com.juan.lazy.philipportfolio.ui.PortfolioScreen
 import com.juan.lazy.philipportfolio.ui.PortfolioViewModel
 import com.juan.lazy.philipportfolio.ui.PortfolioViewModelFactory
@@ -23,7 +24,8 @@ class MainActivity : ComponentActivity() {
 
     // Manual Dependency Injection - In a larger app, use Hilt or Koin
     private val viewModel: PortfolioViewModel by viewModels {
-        PortfolioViewModelFactory(FakePortfolioRepository())
+        val database = PortfolioDatabase.getDatabase(applicationContext)
+        PortfolioViewModelFactory(NetworkPortfolioRepository(applicationContext, database.portfolioDao()))
     }
 
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
@@ -31,15 +33,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            PhilipPortfolioTheme {
+            val uiState by viewModel.uiState.collectAsState()
+            
+            PhilipPortfolioTheme(appTheme = uiState.selectedTheme) {
                 val windowSize = calculateWindowSizeClass(this)
-                // Collecting state from ViewModel
-                val uiState by viewModel.uiState.collectAsState()
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     PortfolioScreen(
                         uiState = uiState,
                         windowSize = windowSize,
+                        onThemeSelected = { viewModel.onThemeSelected(it) },
                         modifier = Modifier.padding(innerPadding)
                     )
                 }

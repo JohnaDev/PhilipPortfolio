@@ -1,7 +1,6 @@
 package com.juan.lazy.philipportfolio.ui.components
 
 import android.content.Intent
-import android.net.Uri
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -18,31 +17,23 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.juan.lazy.philipportfolio.model.Project
-import com.juan.lazy.philipportfolio.ui.theme.AccentPrimary
-import com.juan.lazy.philipportfolio.ui.theme.AccentSecondary
-import com.juan.lazy.philipportfolio.ui.theme.AccentTertiary
-import com.juan.lazy.philipportfolio.ui.theme.CardBackground
-import com.juan.lazy.philipportfolio.ui.theme.PhilipPortfolioTheme
-import com.juan.lazy.philipportfolio.ui.theme.TextPrimary
-import com.juan.lazy.philipportfolio.ui.theme.TextSecondary
 import androidx.core.net.toUri
+import com.juan.lazy.philipportfolio.model.Project
+import com.juan.lazy.philipportfolio.ui.theme.PhilipPortfolioTheme
+import com.juan.lazy.philipportfolio.ui.theme.PortfolioTheme
 
 @Composable
-fun ProjectCard(project: Project) {
+fun ProjectCard(project: Project, modifier: Modifier = Modifier) {
     val context = LocalContext.current
     var expanded by remember { mutableStateOf(false) }
 
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = modifier
             .animateContentSize(
                 animationSpec = spring(
                     dampingRatio = Spring.DampingRatioLowBouncy,
@@ -51,20 +42,20 @@ fun ProjectCard(project: Project) {
             )
             .clickable { expanded = !expanded },
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = CardBackground),
-        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.1f))
+        colors = CardDefaults.cardColors(containerColor = PortfolioTheme.colors.cardBackground),
+        border = BorderStroke(1.dp, PortfolioTheme.colors.textPrimary.copy(alpha = 0.1f))
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Box(
                     modifier = Modifier
                         .size(48.dp)
-                        .background(AccentPrimary.copy(alpha = 0.2f), RoundedCornerShape(12.dp)),
+                        .background(PortfolioTheme.colors.accentPrimary.copy(alpha = 0.2f), RoundedCornerShape(12.dp)),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         project.title.take(1), 
-                        color = AccentPrimary, 
+                        color = PortfolioTheme.colors.accentPrimary, 
                         fontWeight = FontWeight.Bold, 
                         fontSize = 24.sp
                     )
@@ -75,31 +66,48 @@ fun ProjectCard(project: Project) {
                         text = project.title,
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
-                        color = TextPrimary
+                        color = PortfolioTheme.colors.textPrimary
                     )
                     Text(
                         text = project.role,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = TextSecondary
+                        color = PortfolioTheme.colors.textSecondary
                     )
                 }
+                
+                project.link?.let { link ->
+                    IconButton(
+                        onClick = {
+                            val intent = Intent(Intent.ACTION_VIEW, link.toUri())
+                            context.startActivity(intent)
+                        }
+                    ) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.OpenInNew,
+                            contentDescription = "Open Link",
+                            tint = PortfolioTheme.colors.accentPrimary,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                }
+
                 Icon(
                     if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
                     contentDescription = null,
-                    tint = TextSecondary
+                    tint = PortfolioTheme.colors.textSecondary
                 )
             }
             
             Spacer(modifier = Modifier.height(16.dp))
             Surface(
-                color = AccentTertiary.copy(alpha = 0.1f),
+                color = PortfolioTheme.colors.accentTertiary.copy(alpha = 0.1f),
                 shape = RoundedCornerShape(8.dp),
-                border = BorderStroke(1.dp, AccentTertiary.copy(alpha = 0.2f))
+                border = BorderStroke(1.dp, PortfolioTheme.colors.accentTertiary.copy(alpha = 0.2f))
             ) {
                 Text(
                     text = project.technologies,
                     style = MaterialTheme.typography.labelMedium,
-                    color = AccentTertiary,
+                    color = PortfolioTheme.colors.accentTertiary,
                     modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
                     fontWeight = FontWeight.Bold
                 )
@@ -110,7 +118,7 @@ fun ProjectCard(project: Project) {
                 Text(
                     text = project.description,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = TextPrimary.copy(alpha = 0.8f),
+                    color = PortfolioTheme.colors.textPrimary.copy(alpha = 0.8f),
                     lineHeight = 24.sp
                 )
                 
@@ -119,17 +127,17 @@ fun ProjectCard(project: Project) {
                     text = "Key Contributions",
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Bold,
-                    color = AccentSecondary
+                    color = PortfolioTheme.colors.accentSecondary
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 project.keyContributions.forEach { contribution ->
                     Row(modifier = Modifier.padding(bottom = 8.dp)) {
-                        Text("•", color = AccentSecondary, fontWeight = FontWeight.Bold)
+                        Text("•", color = PortfolioTheme.colors.accentSecondary, fontWeight = FontWeight.Bold)
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
                             text = contribution,
                             style = MaterialTheme.typography.bodySmall,
-                            color = TextSecondary,
+                            color = PortfolioTheme.colors.textSecondary,
                             lineHeight = 20.sp
                         )
                     }
@@ -138,16 +146,16 @@ fun ProjectCard(project: Project) {
                 project.note?.let {
                     Spacer(modifier = Modifier.height(20.dp))
                     Surface(
-                        color = Color.White.copy(alpha = 0.05f),
+                        color = PortfolioTheme.colors.textPrimary.copy(alpha = 0.05f),
                         shape = RoundedCornerShape(12.dp),
-                        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.1f))
+                        border = BorderStroke(1.dp, PortfolioTheme.colors.textPrimary.copy(alpha = 0.1f))
                     ) {
                         Text(
                             text = "ℹ️ $it",
                             style = MaterialTheme.typography.bodySmall,
                             modifier = Modifier.padding(16.dp),
                             fontStyle = FontStyle.Italic,
-                            color = TextSecondary
+                            color = PortfolioTheme.colors.textSecondary
                         )
                     }
                 }
@@ -159,33 +167,16 @@ fun ProjectCard(project: Project) {
                             val intent = Intent(Intent.ACTION_VIEW, link.toUri())
                             context.startActivity(intent)
                         },
-                        colors = ButtonDefaults.buttonColors(containerColor = AccentPrimary),
+                        colors = ButtonDefaults.buttonColors(containerColor = PortfolioTheme.colors.accentPrimary),
                         shape = RoundedCornerShape(12.dp),
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Icon(Icons.AutoMirrored.Filled.OpenInNew, contentDescription = null, modifier = Modifier.size(18.dp))
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("View Project Case Study", fontWeight = FontWeight.Bold)
+                        Text("View App", fontWeight = FontWeight.Bold)
                     }
                 }
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ProjectCardPreview() {
-    PhilipPortfolioTheme {
-        ProjectCard(
-            project = Project(
-                title = "Example Project",
-                role = "Lead Developer",
-                technologies = "Kotlin, Jetpack Compose, Firebase",
-                description = "This is a detailed description of the example project.",
-                keyContributions = listOf("Architected the app", "Implemented UI"),
-                link = "https://example.com"
-            )
-        )
     }
 }

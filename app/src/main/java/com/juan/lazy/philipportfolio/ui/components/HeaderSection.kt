@@ -4,16 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
@@ -27,22 +18,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import com.juan.lazy.philipportfolio.R
 import com.juan.lazy.philipportfolio.model.PortfolioUiState
-import com.juan.lazy.philipportfolio.ui.theme.AccentPrimary
-import com.juan.lazy.philipportfolio.ui.theme.AccentSecondary
-import com.juan.lazy.philipportfolio.ui.theme.DarkBackground
 import com.juan.lazy.philipportfolio.ui.theme.PhilipPortfolioTheme
-import com.juan.lazy.philipportfolio.ui.theme.TextPrimary
-import androidx.core.net.toUri
+import com.juan.lazy.philipportfolio.ui.theme.PortfolioTheme
 
 @Composable
 fun HeaderSection(uiState: PortfolioUiState) {
@@ -50,17 +36,17 @@ fun HeaderSection(uiState: PortfolioUiState) {
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp)
+        modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp)
     ) {
         Box(
             modifier = Modifier
-                .size(120.dp)
+                .size(100.dp)
                 .background(
-                    brush = Brush.linearGradient(listOf(AccentPrimary, AccentSecondary)),
+                    brush = Brush.linearGradient(listOf(PortfolioTheme.colors.accentPrimary, PortfolioTheme.colors.accentSecondary)),
                     shape = CircleShape
                 )
                 .padding(4.dp)
-                .background(DarkBackground, CircleShape)
+                .background(PortfolioTheme.colors.background, CircleShape)
                 .clip(CircleShape),
             contentAlignment = Alignment.Center
         ) {
@@ -71,23 +57,23 @@ fun HeaderSection(uiState: PortfolioUiState) {
                 contentScale = ContentScale.Crop
             )
         }
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = uiState.name,
-            style = MaterialTheme.typography.displaySmall,
+            style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.ExtraBold,
-            color = TextPrimary
+            color = PortfolioTheme.colors.textPrimary
         )
         Text(
             text = uiState.role.uppercase(),
-            style = MaterialTheme.typography.labelLarge,
-            color = AccentPrimary,
+            style = MaterialTheme.typography.labelMedium,
+            color = PortfolioTheme.colors.accentPrimary,
             fontWeight = FontWeight.Bold,
             letterSpacing = 2.sp
         )
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(20.dp))
         Row(
-            horizontalArrangement = Arrangement.spacedBy(20.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             ContactIcon(Icons.Filled.Email, uiState.email) {
@@ -109,33 +95,11 @@ fun HeaderSection(uiState: PortfolioUiState) {
                 context.startActivity(mapIntent)
             }
         }
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(24.dp))
         HorizontalDivider(
-            color = Color.White.copy(alpha = 0.1f), 
+            color = PortfolioTheme.colors.textPrimary.copy(alpha = 0.1f), 
             thickness = 1.dp,
             modifier = Modifier.padding(horizontal = 40.dp)
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun HeaderSectionPreview() {
-    PhilipPortfolioTheme {
-        HeaderSection(
-            uiState = PortfolioUiState(
-                name = "John Doe",
-                role = "Senior Android Developer",
-                email = "john@example.com",
-                phone = "123-456-7890",
-                location = "New York, USA",
-                aboutMe = "",
-                skills = emptyMap(),
-                projects = emptyList(),
-                experiences = emptyList(),
-                education = "",
-                languages = emptyList()
-            )
         )
     }
 }

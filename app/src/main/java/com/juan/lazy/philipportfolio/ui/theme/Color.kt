@@ -2,37 +2,33 @@ package com.juan.lazy.philipportfolio.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+// Light Colors
+val LightBackground = Color(0xFFFDFDFD)
+val LightCardBackground = Color(0xFFFFFFFF)
+val LightTextPrimary = Color(0xFF18181B)
+val LightTextSecondary = Color(0xFF52525B)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
-
-// Modern Professional Palette
+// Dark Colors
 val DarkBackground = Color(0xFF0F172A) // Slate 900
 val CardBackground = Color(0xFF1E293B) // Slate 800
-val SurfaceLight = Color(0xFF334155)  // Slate 700
-
-val AccentPrimary = Color(0xFF38BDF8) // Sky 400
-val AccentSecondary = Color(0xFF818CF8) // Indigo 400
-val AccentTertiary = Color(0xFF2DD4BF) // Teal 400
-
 val TextPrimary = Color(0xFFF8FAFC) // Slate 50
 val TextSecondary = Color(0xFF94A3B8) // Slate 400
 
-val VibrantAmber = Color(0xFFFBBF24) // Amber 400
-val DeepOrange = Color(0xFFFB923C) // Orange 400
-val SoftCyan = Color(0xFF7DD3FC) // Sky 300
-val DeepOcean = Color(0xFF0369A1) // Sky 700
-val SkyBlue = Color(0xFF0EA5E9) // Sky 500
+// Shared Accents
+val AccentPrimary = Color(0xFF0EA5E9) // Sky 500
+val AccentSecondary = Color(0xFF6366F1) // Indigo 500
+val AccentTertiary = Color(0xFF14B8A6) // Teal 500
+
+// Light Accents
+val LightAccentPrimary = Color(0xFF0284C7) // Sky 600
+val LightAccentSecondary = Color(0xFF4F46E5) // Indigo 600
+val LightAccentTertiary = Color(0xFF0D9488) // Teal 600
 
 val SkillColors = listOf(
-    Color(0xFF38BDF8), // Sky
-    Color(0xFF818CF8), // Indigo
-    Color(0xFF2DD4BF), // Teal
-    Color(0xFFF472B6), // Pink
-    Color(0xFFFB923C), // Orange
-    Color(0xFF94A3B8)  // Slate
+    Color(0xFF0EA5E9),
+    Color(0xFF6366F1),
+    Color(0xFF14B8A6),
+    Color(0xFFD946EF),
+    Color(0xFFF59E0B),
+    Color(0xFF64748B)
 )
