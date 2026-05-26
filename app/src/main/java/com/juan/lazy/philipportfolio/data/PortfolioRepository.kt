@@ -8,7 +8,9 @@ import com.juan.lazy.philipportfolio.model.Experience
 import com.juan.lazy.philipportfolio.model.PortfolioData
 import com.juan.lazy.philipportfolio.model.PortfolioUiState
 import com.juan.lazy.philipportfolio.model.Project
+import com.juan.lazy.philipportfolio.model.SyncStatus
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.encodeToString
@@ -55,10 +57,12 @@ class NetworkPortfolioRepository(
         }
 
         // If we have local data (either from DB or just loaded from assets), emit it
+        var hasLocalData = false
         if (localData != null) {
             try {
                 val portfolio = json.decodeFromString<PortfolioData>(localData.jsonContent)
-                emit(mapToUiState(portfolio).copy(isLoading = false))
+                emit(mapToUiState(portfolio).copy(isLoading = false, syncStatus = SyncStatus.SYNCING))
+                hasLocalData = true
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -70,13 +74,25 @@ class NetworkPortfolioRepository(
             val jsonString = json.encodeToString(networkData)
             portfolioDao.insertPortfolio(PortfolioEntity(jsonContent = jsonString))
             
-            // Emit updated state
-            emit(mapToUiState(networkData).copy(isLoading = false))
+            // Emit updated state with SUCCESS status
+            emit(mapToUiState(networkData).copy(isLoading = false, syncStatus = SyncStatus.SUCCESS))
+            
+            // Wait a moment so the user can see the "Success/Synced" state
+            delay(2000)
+            
+            // Finally return to IDLE
+            emit(mapToUiState(networkData).copy(isLoading = false, syncStatus = SyncStatus.IDLE))
         } catch (e: Exception) {
             e.printStackTrace()
-            // Stop loading if network fails and we didn't have any data
-            if (localData == null) {
-                emit(PortfolioUiState(isLoading = false))
+            if (hasLocalData) {
+                val portfolio = json.decodeFromString<PortfolioData>(localData!!.jsonContent)
+                emit(mapToUiState(portfolio).copy(isLoading = false, syncStatus = SyncStatus.ERROR))
+                delay(2000)
+                emit(mapToUiState(portfolio).copy(isLoading = false, syncStatus = SyncStatus.IDLE))
+            } else {
+                emit(PortfolioUiState(isLoading = false, syncStatus = SyncStatus.ERROR))
+                delay(2000)
+                emit(PortfolioUiState(isLoading = false, syncStatus = SyncStatus.IDLE))
             }
         }
     }

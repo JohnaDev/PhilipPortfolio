@@ -125,8 +125,13 @@ enum class AppTheme {
     LIGHT, DARK, SYSTEM
 }
 
+enum class SyncStatus {
+    IDLE, SYNCING, SUCCESS, ERROR
+}
+
 data class PortfolioUiState(
     val isLoading: Boolean = true,
+    val syncStatus: SyncStatus = SyncStatus.IDLE,
     val selectedTheme: AppTheme = AppTheme.SYSTEM,
     val name: String = "",
     val role: String = "",
