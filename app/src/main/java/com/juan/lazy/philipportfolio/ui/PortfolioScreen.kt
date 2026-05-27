@@ -1,6 +1,8 @@
 package com.juan.lazy.philipportfolio.ui
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.BorderStroke
@@ -33,16 +35,12 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Work
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.NavigationRailItemDefaults
@@ -53,22 +51,29 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.juan.lazy.philipportfolio.R
 import com.juan.lazy.philipportfolio.model.AppTheme
-import com.juan.lazy.philipportfolio.model.Experience
 import com.juan.lazy.philipportfolio.model.PortfolioUiState
-import com.juan.lazy.philipportfolio.model.Project
 import com.juan.lazy.philipportfolio.model.SyncStatus
 import com.juan.lazy.philipportfolio.ui.components.AboutMeSection
 import com.juan.lazy.philipportfolio.ui.components.EducationSection
@@ -78,7 +83,6 @@ import com.juan.lazy.philipportfolio.ui.components.LanguagesSection
 import com.juan.lazy.philipportfolio.ui.components.ProjectCard
 import com.juan.lazy.philipportfolio.ui.components.SectionHeader
 import com.juan.lazy.philipportfolio.ui.components.SkillsSection
-import com.juan.lazy.philipportfolio.ui.theme.PhilipPortfolioTheme
 import com.juan.lazy.philipportfolio.ui.theme.PortfolioTheme
 import kotlinx.coroutines.launch
 
@@ -98,7 +102,10 @@ fun PortfolioScreen(
         }
     } else {
         val gradientBackground = Brush.verticalGradient(
-            colors = listOf(PortfolioTheme.colors.background, PortfolioTheme.colors.backgroundGradientEnd)
+            colors = listOf(
+                PortfolioTheme.colors.background,
+                PortfolioTheme.colors.backgroundGradientEnd
+            )
         )
 
         Box(
@@ -139,18 +146,21 @@ private fun SyncingIndicator(syncStatus: SyncStatus) {
                     "Updating...",
                     null
                 )
+
                 SyncStatus.SUCCESS -> listOf(
                     Color(0xFF22C55E).copy(alpha = 0.1f),
                     Color(0xFF22C55E),
                     "Up to date",
                     Icons.Default.CheckCircle
                 )
+
                 SyncStatus.ERROR -> listOf(
                     MaterialTheme.colorScheme.error.copy(alpha = 0.1f),
                     MaterialTheme.colorScheme.error,
                     "Sync failed",
                     Icons.Default.Error
                 )
+
                 else -> listOf(Color.Transparent, Color.Transparent, "", null)
             }
 
@@ -171,7 +181,7 @@ private fun SyncingIndicator(syncStatus: SyncStatus) {
                         )
                     } else {
                         Icon(
-                            imageVector = icon as androidx.compose.ui.graphics.vector.ImageVector,
+                            imageVector = icon as ImageVector,
                             contentDescription = null,
                             modifier = Modifier.size(14.dp),
                             tint = contentColor
@@ -199,8 +209,26 @@ internal fun PortfolioBottomNavLayout(
     val pagerState = rememberPagerState { tabs.size }
     val scope = rememberCoroutineScope()
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        Column(modifier = Modifier.weight(1f)) {
+    var isExpanded by remember { mutableStateOf(true) }
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                if (available.y < -5) {
+                    isExpanded = false
+                } else if (available.y > 5) {
+                    isExpanded = true
+                }
+                return Offset.Zero
+            }
+        }
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .nestedScroll(nestedScrollConnection)
+    ) {
+        Column(modifier = Modifier.fillMaxSize()) {
             HeaderSection(uiState)
 
             HorizontalPager(
@@ -210,7 +238,12 @@ internal fun PortfolioBottomNavLayout(
             ) { page ->
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(16.dp),
+                    contentPadding = PaddingValues(
+                        start = 16.dp,
+                        end = 16.dp,
+                        top = 16.dp,
+                        bottom = 120.dp
+                    ),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     when (page) {
@@ -222,20 +255,24 @@ internal fun PortfolioBottomNavLayout(
                             item { SectionHeader("Languages", Icons.Filled.Language) }
                             item { LanguagesSection(uiState.languages) }
                         }
+
                         1 -> {
                             item { SkillsSection(uiState.skills) }
                         }
+
                         2 -> {
                             item { SectionHeader("Featured Projects", Icons.Filled.Star) }
                             items(uiState.projects) { project ->
                                 ProjectCard(project)
                             }
                         }
+
                         3 -> {
                             items(uiState.experiences) { experience ->
                                 ExperienceCard(experience)
                             }
                         }
+
                         4 -> { // Settings
                             item { SectionHeader("Theme", Icons.Filled.Settings) }
                             item { ThemeSelectionSection(uiState.selectedTheme, onThemeSelected) }
@@ -246,46 +283,121 @@ internal fun PortfolioBottomNavLayout(
             }
         }
 
-        NavigationBar(
-            containerColor = PortfolioTheme.colors.background,
-            contentColor = PortfolioTheme.colors.accentPrimary,
-            tonalElevation = 8.dp
+        FloatingTabBar(
+            tabs = tabs,
+            selectedIndex = pagerState.currentPage,
+            isExpanded = isExpanded,
+            onTabSelected = { index ->
+                scope.launch {
+                    pagerState.animateScrollToPage(index)
+                }
+                isExpanded = true
+            },
+            modifier = Modifier
+                .align(if (isExpanded) Alignment.BottomCenter
+                else Alignment.BottomEnd)
+                .padding(horizontal = 24.dp)
+                .padding(bottom = 24.dp)
+        )
+    }
+}
+
+@Composable
+fun FloatingTabBar(
+    tabs: List<String>,
+    selectedIndex: Int,
+    isExpanded: Boolean,
+    onTabSelected: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(32.dp),
+        color = PortfolioTheme.colors.cardBackground.copy(alpha = 0.98f),
+        tonalElevation = 12.dp,
+        border = BorderStroke(1.dp, PortfolioTheme.colors.textSecondary.copy(alpha = 0.1f))
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(horizontal = 8.dp, vertical = 8.dp)
+                .animateContentSize(),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            tabs.forEachIndexed { index, title ->
-                NavigationBarItem(
-                    selected = pagerState.currentPage == index,
-                    onClick = {
-                        scope.launch {
-                            pagerState.animateScrollToPage(index)
-                        }
-                    },
-                    icon = {
-                        val icon = when (index) {
-                            0 -> Icons.Filled.Person
-                            1 -> Icons.Filled.Build
-                            2 -> Icons.Filled.Star
-                            3 -> Icons.Filled.Work
-                            else -> Icons.Filled.Settings
-                        }
-                        Icon(icon, contentDescription = title)
-                    },
-                    label = { 
-                        Text(
-                            text = title,
-                            style = MaterialTheme.typography.labelSmall
-                        ) 
-                    },
-                    colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = PortfolioTheme.colors.accentPrimary,
-                        selectedTextColor = PortfolioTheme.colors.accentPrimary,
-                        unselectedIconColor = PortfolioTheme.colors.textSecondary,
-                        unselectedTextColor = PortfolioTheme.colors.textSecondary,
-                        indicatorColor = PortfolioTheme.colors.accentPrimary.copy(alpha = 0.1f)
+            if (isExpanded) {
+                tabs.forEachIndexed { index, title ->
+                    val isSelected = selectedIndex == index
+
+                    val backgroundColor by animateColorAsState(
+                        targetValue = if (isSelected) PortfolioTheme.colors.accentPrimary.copy(alpha = 0.15f)
+                        else Color.Transparent,
+                        label = "bg"
                     )
-                )
+                    val contentColor by animateColorAsState(
+                        targetValue = if (isSelected) PortfolioTheme.colors.accentPrimary
+                        else PortfolioTheme.colors.textSecondary,
+                        label = "content"
+                    )
+
+                    Box(
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .background(backgroundColor)
+                            .clickable { onTabSelected(index) }
+                            .padding(horizontal = 12.dp, vertical = 10.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                getIconForTab(index),
+                                contentDescription = title,
+                                tint = contentColor,
+                                modifier = Modifier.size(24.dp)
+                            )
+                            if (isSelected) {
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = title,
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = contentColor,
+                                    fontWeight = FontWeight.Bold,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    softWrap = false
+                                )
+                            }
+                        }
+                    }
+                }
+            } else {
+                // Minimized state: Only show the active tab icon
+                val title = tabs[selectedIndex]
+                Box(
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .background(PortfolioTheme.colors.accentPrimary.copy(alpha = 0.15f))
+                        .clickable { onTabSelected(selectedIndex) }
+                        .padding(horizontal = 16.dp, vertical = 10.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        getIconForTab(selectedIndex),
+                        contentDescription = title,
+                        tint = PortfolioTheme.colors.accentPrimary,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
             }
         }
     }
+}
+
+private fun getIconForTab(index: Int): ImageVector = when (index) {
+    0 -> Icons.Filled.Person
+    1 -> Icons.Filled.Build
+    2 -> Icons.Filled.Star
+    3 -> Icons.Filled.Work
+    else -> Icons.Filled.Settings
 }
 
 @Composable
@@ -309,7 +421,12 @@ internal fun PortfolioExpandedTabbedLayout(
                         modifier = Modifier
                             .size(64.dp)
                             .background(
-                                brush = Brush.linearGradient(listOf(PortfolioTheme.colors.accentPrimary, PortfolioTheme.colors.accentSecondary)),
+                                brush = Brush.linearGradient(
+                                    listOf(
+                                        PortfolioTheme.colors.accentPrimary,
+                                        PortfolioTheme.colors.accentSecondary
+                                    )
+                                ),
                                 shape = CircleShape
                             )
                             .padding(2.dp)
@@ -337,14 +454,7 @@ internal fun PortfolioExpandedTabbedLayout(
                         }
                     },
                     icon = {
-                        val icon = when (index) {
-                            0 -> Icons.Filled.Person
-                            1 -> Icons.Filled.Build
-                            2 -> Icons.Filled.Star
-                            3 -> Icons.Filled.Work
-                            else -> Icons.Filled.Settings
-                        }
-                        Icon(icon, contentDescription = title)
+                        Icon(getIconForTab(index), contentDescription = title)
                     },
                     label = { Text(title) },
                     colors = NavigationRailItemDefaults.colors(
@@ -375,27 +485,36 @@ internal fun PortfolioExpandedTabbedLayout(
                             item { SectionHeader("🧭 About Me", Icons.Filled.Person) }
                             item { AboutMeSection(uiState.aboutMe) }
                             item { ContactInfoRow(uiState) }
-                            item { SectionHeader("🎓 Education", Icons.AutoMirrored.Filled.MenuBook) }
+                            item {
+                                SectionHeader(
+                                    "🎓 Education",
+                                    Icons.AutoMirrored.Filled.MenuBook
+                                )
+                            }
                             item { EducationSection(uiState.education) }
                             item { SectionHeader("🌐 Languages", Icons.Filled.Language) }
                             item { LanguagesSection(uiState.languages) }
                         }
+
                         1 -> {
                             item { SectionHeader("🛠️ Technical Skills", Icons.Filled.Build) }
                             item { SkillsSection(uiState.skills) }
                         }
+
                         2 -> {
                             item { SectionHeader("📱 Featured Projects", Icons.Filled.Star) }
                             items(uiState.projects) { project ->
                                 ProjectCard(project)
                             }
                         }
+
                         3 -> {
                             item { SectionHeader("💼 Professional Experience", Icons.Filled.Work) }
                             items(uiState.experiences) { experience ->
                                 ExperienceCard(experience)
                             }
                         }
+
                         4 -> {
                             item { SectionHeader("⚙️ Settings", Icons.Filled.Settings) }
                             item { ThemeSelectionSection(uiState.selectedTheme, onThemeSelected) }
@@ -427,9 +546,9 @@ fun ThemeSelectionSection(
                         .padding(vertical = 6.dp)
                         .border(
                             width = 1.dp,
-                            color = if (isSelected) 
-                                PortfolioTheme.colors.accentPrimary 
-                            else 
+                            color = if (isSelected)
+                                PortfolioTheme.colors.accentPrimary
+                            else
                                 PortfolioTheme.colors.textSecondary.copy(alpha = 0.2f),
                             shape = RoundedCornerShape(16.dp)
                         )
@@ -466,63 +585,21 @@ private fun ContactInfoRow(uiState: PortfolioUiState) {
         horizontalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(uiState.email, color = PortfolioTheme.colors.textSecondary, style = MaterialTheme.typography.bodyMedium)
-            Text(uiState.phone, color = PortfolioTheme.colors.textSecondary, style = MaterialTheme.typography.bodyMedium)
-            Text(uiState.location, color = PortfolioTheme.colors.textSecondary, style = MaterialTheme.typography.bodyMedium)
-        }
-    }
-}
-
-private val PreviewUiState = PortfolioUiState(
-    isLoading = false,
-    name = "John Philip Agustino",
-    role = "Android Developer",
-    location = "Davao City, Philippines",
-    email = "johnphilipagustino@gmail.com",
-    phone = "+63 9399353004",
-    aboutMe = "Experienced Android Developer with a strong background in building and maintaining native Android applications.",
-    skills = mapOf(
-        "Languages" to listOf("Kotlin", "Java", "Lua"),
-        "Frameworks" to listOf("Jetpack Compose", "Firebase", "Retrofit")
-    ),
-    projects = listOf(
-        Project(
-            title = "Little Ones",
-            role = "Senior Android Developer",
-            technologies = "Kotlin, Jetpack Compose, Firebase",
-            description = "Baby sleep and parenting app.",
-            keyContributions = listOf("Rebuilt major app components", "Developed social feed"),
-            link = "https://play.google.com/store/apps/details?id=nz.co.littleones.prod"
-        )
-    ),
-    experiences = listOf(
-        Experience(
-            role = "Senior Android Developer",
-            company = "Dev Partners",
-            period = "2018 – Present",
-            highlights = listOf("Modernized apps with Jetpack Compose", "Mentored junior developers")
-        )
-    ),
-    education = "Bachelor of Science in Computer Science - Notre Dame University 2012",
-    languages = listOf("English: Fluent", "Filipino: Fluent")
-)
-
-@Preview(showBackground = true, device = "spec:width=411dp,height=891dp")
-@Composable
-fun PortfolioCompactPreview() {
-    PhilipPortfolioTheme {
-        Box(modifier = Modifier.background(PortfolioTheme.colors.background)) {
-            PortfolioBottomNavLayout(PreviewUiState, onThemeSelected = {})
-        }
-    }
-}
-
-@Preview(showBackground = true, device = "spec:width=1280dp,height=800dp,orientation=landscape")
-@Composable
-fun PortfolioExpandedPreview() {
-    PhilipPortfolioTheme {
-        Box(modifier = Modifier.background(PortfolioTheme.colors.background)) {
-            PortfolioExpandedTabbedLayout(PreviewUiState, onThemeSelected = {})
+            Text(
+                uiState.email,
+                color = PortfolioTheme.colors.textSecondary,
+                style = MaterialTheme.typography.bodyMedium
+            )
+            Text(
+                uiState.phone,
+                color = PortfolioTheme.colors.textSecondary,
+                style = MaterialTheme.typography.bodyMedium
+            )
+            Text(
+                uiState.location,
+                color = PortfolioTheme.colors.textSecondary,
+                style = MaterialTheme.typography.bodyMedium
+            )
         }
     }
 }
