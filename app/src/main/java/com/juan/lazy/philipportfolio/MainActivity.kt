@@ -13,8 +13,6 @@ import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.juan.lazy.philipportfolio.data.NetworkPortfolioRepository
-import com.juan.lazy.philipportfolio.data.local.PortfolioDatabase
 import com.juan.lazy.philipportfolio.ui.PortfolioScreen
 import com.juan.lazy.philipportfolio.ui.PortfolioViewModel
 import com.juan.lazy.philipportfolio.ui.PortfolioViewModelFactory
@@ -22,10 +20,9 @@ import com.juan.lazy.philipportfolio.ui.theme.PhilipPortfolioTheme
 
 class MainActivity : ComponentActivity() {
 
-    // Manual Dependency Injection - In a larger app, use Hilt or Koin
     private val viewModel: PortfolioViewModel by viewModels {
-        val database = PortfolioDatabase.getDatabase(applicationContext)
-        PortfolioViewModelFactory(NetworkPortfolioRepository(applicationContext, database.portfolioDao()))
+        val repository = (application as PortfolioApplication).container.portfolioRepository
+        PortfolioViewModelFactory(repository)
     }
 
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
