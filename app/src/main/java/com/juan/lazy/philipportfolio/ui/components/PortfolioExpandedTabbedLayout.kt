@@ -128,41 +128,41 @@ internal fun PortfolioExpandedTabbedLayout(
                 ) {
                     when (page) {
                         0 -> {
-                            item { SectionHeader("🧭 About Me", Icons.Filled.Person) }
+                            item { SectionHeader("About Me", Icons.Filled.Person) }
                             item { AboutMeSection(uiState.aboutMe) }
                             item { ContactInfoRow(uiState) }
                             item {
                                 SectionHeader(
-                                    "🎓 Education",
+                                    "Education",
                                     Icons.AutoMirrored.Filled.MenuBook
                                 )
                             }
                             item { EducationSection(uiState.education) }
-                            item { SectionHeader("🌐 Languages", Icons.Filled.Language) }
+                            item { SectionHeader("Languages", Icons.Filled.Language) }
                             item { LanguagesSection(uiState.languages) }
                         }
 
                         1 -> {
-                            item { SectionHeader("🛠️ Technical Skills", Icons.Filled.Build) }
+                            item { SectionHeader("Technical Skills", Icons.Filled.Build) }
                             item { SkillsSection(uiState.skills) }
                         }
 
                         2 -> {
-                            item { SectionHeader("📱 Featured Projects", Icons.Filled.Star) }
+                            item { SectionHeader("Featured Projects", Icons.Filled.Star) }
                             items(uiState.projects) { project ->
                                 ProjectCard(project)
                             }
                         }
 
                         3 -> {
-                            item { SectionHeader("💼 Professional Experience", Icons.Filled.Work) }
+                            item { SectionHeader("Professional Experience", Icons.Filled.Work) }
                             items(uiState.experiences) { experience ->
                                 ExperienceCard(experience)
                             }
                         }
 
                         4 -> {
-                            item { SectionHeader("⚙️ Settings", Icons.Filled.Settings) }
+                            item { SectionHeader("Settings", Icons.Filled.Settings) }
                             item { ThemeSelectionSection(uiState.selectedTheme, onThemeSelected) }
                         }
                     }
