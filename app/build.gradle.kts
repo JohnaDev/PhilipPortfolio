@@ -14,8 +14,8 @@ android {
         applicationId = "com.juan.lazy.philipportfolio"
         minSdk = 24
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = GitInfo.getGitCommitCount()
+        versionName = GitInfo.getVersionName()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
