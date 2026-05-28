@@ -30,14 +30,12 @@ jobs:
         run: |
           VERSION_NAME=$(grep "versionName =" app/build.gradle.kts | awk -F '"' '{print $2}')
           VERSION_CODE=$(grep "versionCode =" app/build.gradle.kts | awk '{print $3}')
-          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
-          echo "version_code=$VERSION_CODE" >> $GITHUB_OUTPUT
-
-      - name: Rename APK
-        run: mv app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/porfolio_${{ steps.get_version.outputs.version_name }}_${{ steps.get_version.outputs.version_code }}.apk
+          # Note: If version is calculated by GitInfo, you might need to extract it differently 
+          # or just use a wildcard for the upload path.
+          echo "file_name=porfolio_${VERSION_NAME}_${VERSION_CODE}.apk" >> $GITHUB_OUTPUT
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: porfolio_${{ steps.get_version.outputs.version_name }}_${{ steps.get_version.outputs.version_code }}.apk
-          path: app/build/outputs/apk/debug/porfolio_${{ steps.get_version.outputs.version_name }}_${{ steps.get_version.outputs.version_code }}.apk
+          name: porfolio-build
+          path: app/build/outputs/apk/debug/porfolio_*.apk
