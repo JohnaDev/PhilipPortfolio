@@ -19,7 +19,12 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
+    applicationVariants.all {
+        outputs.all {
+            val output = this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
+            output.outputFileName = "porfolio_${versionName}_${versionCode}.apk"
+        }
+    }
     buildTypes {
         release {
             isShrinkResources = true
