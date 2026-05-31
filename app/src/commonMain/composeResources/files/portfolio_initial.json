@@ -1,0 +1,265 @@
+{
+  "profile": {
+    "full_name": "John Philip Agustino",
+    "title": "Senior Android Developer",
+    "location": {
+      "city": "Davao City",
+      "country": "Philippines"
+    },
+    "contact": {
+      "email": "johnphilipagustino@gmail.com",
+      "phone": "+63 9399353004"
+    },
+    "about_me": "Experienced Senior Android Developer with a strong background in building and maintaining native Android applications, Android TV apps, and mobile games. Skilled in Kotlin, Java, Jetpack Compose, and modern Android frameworks. Passionate about crafting high quality, maintainable, and user centered applications ranging from healthcare solutions to fitness platforms and gaming experiences."
+  },
+  "technical_skills": {
+    "languages": [
+      "Kotlin",
+      "Java",
+      "Lua"
+    ],
+    "frameworks_and_tools": [
+      "Android SDK",
+      "Jetpack Compose",
+      "Firebase",
+      "Retrofit",
+      "Glide",
+      "MVVM",
+      "Ktor",
+      "SQLite"
+    ],
+    "project_management": [
+      "Jira",
+      "Trello",
+      "OpenProject"
+    ],
+    "build_and_version_control": [
+      "Gradle",
+      "Git",
+      "GitHub",
+      "GitHub Actions",
+      "GitLab CI/CD",
+      "Fastlane"
+    ],
+    "core_concepts": [
+      "RESTful APIs",
+      "CI/CD",
+      "Material Design",
+      "Unit Testing",
+      "JUnit",
+      "Espresso",
+      "Bluetooth Integration"
+    ]
+  },
+  "featured_projects": [
+    {
+      "name": "Little Ones",
+      "role": "Senior Android Developer",
+      "project_url": "https://play.google.com/store/apps/details?id=nz.co.littleones.prod",
+      "technologies": [
+        "Kotlin",
+        "Java",
+        "XML",
+        "Jetpack Compose",
+        "Firebase",
+        "Retrofit"
+      ],
+      "overview": "Little Ones is a baby sleep and parenting app that provides expert routines, sleep tracking, and personalized advice. It includes a community feed where parents and consultants can post updates and a private chat system for one on one communication.",
+      "features": [
+        "Community feed with posts, comments, and social interactions",
+        "Private messaging system between parents and consultants",
+        "Sleep tracking and personalized parenting advice"
+      ],
+      "key_contributions": [
+        "Rebuilt major app components using Jetpack Compose and modular architecture",
+        "Developed a social feed supporting posts, comments, and media uploads with real time updates",
+        "Implemented private chat and messaging using Firebase Firestore, Realtime Database, and Firebase Authentication",
+        "Integrated Firebase Cloud Messaging for notifications and engagement",
+        "Collaborated with product and UX teams to align with Material Design 3"
+      ]
+    },
+    {
+      "name": "F45 Training",
+      "role": "Android Developer",
+      "project_url": "https://f45training.com/",
+      "technologies": [
+        "Kotlin",
+        "Android TV SDK",
+        "Bluetooth",
+        "RESTful APIs"
+      ],
+      "overview": "An Android TV application for F45 studios that acts as a virtual workout coach displaying exercise sessions and real time performance metrics.",
+      "notes": {
+        "enterprise_only": true,
+        "play_store_available": false
+      },
+      "key_contributions": [
+        "Built Android TV applications for large studio workout displays",
+        "Integrated Bluetooth heart rate monitors for live tracking and visualization",
+        "Implemented real time workout synchronization and session displays",
+        "Optimized playback and rendering for high resolution video",
+        "Ensured reliable multi screen synchronization across studio environments"
+      ]
+    },
+    {
+      "name": "Perfect Home Health",
+      "role": "Android Developer",
+      "project_url": "https://play.google.com/store/apps/details?id=com.noteefied.perfect",
+      "technologies": [
+        "Java",
+        "XML",
+        "Retrofit",
+        "SQLite",
+        "JSON"
+      ],
+      "overview": "A healthcare management app used by home health professionals for scheduling, documentation, and compliance tracking.",
+      "key_contributions": [
+        "Built modules for patient data entry, scheduling, and synchronization",
+        "Implemented secure RESTful API integrations",
+        "Ensured HIPAA compliance and reliability for field operations"
+      ]
+    },
+    {
+      "name": "Eagle Quote",
+      "role": "Senior Android Developer",
+      "project_url": "https://play.google.com/store/apps/details?id=blackfintechnology.eaglequote",
+      "technologies": [
+        "Java",
+        "XML",
+        "Kotlin",
+        "MVVM",
+        "Retrofit"
+      ],
+      "overview": "A quoting and CRM tool for insurance agents to generate and manage client quotes efficiently.",
+      "key_contributions": [
+        "Developed MVVM based modules for scalable architecture",
+        "Integrated RESTful APIs for quote generation and management",
+        "Improved testing and deployment workflows with CI/CD pipelines"
+      ]
+    },
+    {
+      "name": "Tilt Toby",
+      "role": "Lead Game Developer",
+      "project_url": "https://www.amazon.com/Larry-Hall-Machado-Tilt-Toby-Lite/dp/B00GXZSJ1S",
+      "technologies": [
+        "Lua",
+        "Corona SDK",
+        "Android SDK"
+      ],
+      "overview": "A tilt based physics mobile game featuring smooth motion controls and engaging gameplay mechanics.",
+      "key_contributions": [
+        "Designed and built the game using Corona SDK (Solar2D) and Lua",
+        "Implemented responsive tilt controls and optimized physics rendering",
+        "Directed a small team and managed the full development and QA cycle"
+      ]
+    }
+  ],
+  "professional_experience": [
+    {
+      "position": "Android Developer",
+      "company": "Feiwin",
+      "employment_period": {
+        "start": "2025-12",
+        "end": "2026-05"
+      },
+      "responsibilities": [
+        "Built and maintained frontend gaming and chat applications using Kotlin and Jetpack Compose",
+        "Leveraged Ktor for networking and API communication",
+        "Implemented deployment pipelines using GitLab CI/CD",
+        "Utilized Fastlane for build and release automation",
+        "Collaborated with backend and design teams to deliver responsive user experiences"
+      ]
+    },
+    {
+      "position": "Senior Android Developer",
+      "company": "Dev Partners",
+      "employment_period": {
+        "start": "2018-06",
+        "end": "2025-12"
+      },
+      "responsibilities": [
+        "Developed and maintained Android applications using Kotlin, Java, and XML",
+        "Modernized legacy applications with Jetpack Compose",
+        "Integrated Firebase for analytics, authentication, and synchronization",
+        "Refactored codebases for performance, scalability, and maintainability",
+        "Implemented CI/CD pipelines using GitHub Actions",
+        "Mentored developers and promoted clean architecture practices"
+      ]
+    },
+    {
+      "position": "Android Developer",
+      "company": "Bywave",
+      "employment_period": {
+        "start": "2015-05",
+        "end": "2018-06"
+      },
+      "responsibilities": [
+        "Developed Android applications using Java, Android SDK, and XML layouts",
+        "Implemented Bluetooth integration for heart rate monitor connectivity",
+        "Integrated RESTful APIs, SQLite, and JSON",
+        "Applied Material Design standards for usability improvements",
+        "Mentored junior developers on debugging and coding standards",
+        "Conducted performance tuning and unit testing"
+      ]
+    },
+    {
+      "position": "Android Developer",
+      "company": "Note-e-fied Incorporated",
+      "employment_period": {
+        "start": "2014-07",
+        "end": "2015-09"
+      },
+      "responsibilities": [
+        "Developed healthcare and hospice management applications",
+        "Supported patient documentation and home visit workflows",
+        "Focused on offline functionality and synchronization",
+        "Collaborated with QA and product teams for healthcare compliance"
+      ]
+    },
+    {
+      "position": "Android Developer",
+      "company": "Data Soft Logic",
+      "employment_period": {
+        "start": "2014-01",
+        "end": "2014-05"
+      },
+      "responsibilities": [
+        "Developed enterprise and healthcare Android applications",
+        "Integrated APIs using Retrofit and Gson",
+        "Maintained compatibility with newer Android SDK releases",
+        "Focused on data integrity and application security"
+      ]
+    },
+    {
+      "position": "Lead Mobile App/Game Developer",
+      "company": "8appstudio",
+      "employment_period": {
+        "start": "2012-06",
+        "end": "2013-11"
+      },
+      "responsibilities": [
+        "Led mobile app and game development projects",
+        "Designed and developed Android games using Corona SDK",
+        "Defined workflows, coding standards, and version control practices",
+        "Managed a small development team"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "Bachelor of Science in Computer Science",
+      "institution": "Notre Dame University of Cotabato",
+      "year_graduated": 2012
+    }
+  ],
+  "languages": [
+    {
+      "language": "English",
+      "proficiency": "Fluent"
+    },
+    {
+      "language": "Filipino",
+      "proficiency": "Fluent"
+    }
+  ]
+}
