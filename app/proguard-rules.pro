@@ -19,3 +19,41 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Kotlin Serialization
+-keepattributes *Annotation*, InnerClasses, Signature, Exceptions, SourceFile, LineNumberTable
+-keepclassmembers class * {
+    @kotlinx.serialization.Serializable *;
+}
+-keepclassmembers class * {
+    @kotlinx.serialization.SerialName *;
+}
+-keep class *$$serializer { *; }
+-keepclassmembers class * {
+    public static final ** Companion;
+}
+
+# Retrofit 2
+-keepattributes Signature, InnerClasses, EnclosingMethod
+-keepattributes RuntimeVisibleAnnotations, RuntimeVisibleParameterAnnotations
+-keepattributes AnnotationDefault
+
+-keepclassmembers,allowshrinking,allowoptimization interface * {
+    @retrofit2.http.* <methods>;
+}
+
+-keep,allowobfuscation,allowshrinking interface *
+
+# Keep our data models to prevent field name obfuscation
+-keep class com.juan.lazy.philipportfolio.model.** { *; }
+
+# Room
+-keep class * extends androidx.room.RoomDatabase
+-keep class com.juan.lazy.philipportfolio.data.local.** { *; }
+
+# OkHttp
+-keepattributes Signature
+-keepattributes *Annotation*
+-keep class okhttp3.** { *; }
+-keep interface okhttp3.** { *; }
+-dontwarn okhttp3.**

@@ -20,10 +20,12 @@ class DefaultAppContainer(private val context: Context) : AppContainer {
         coerceInputValues = true
     }
 
+    private val okHttpClient = OkHttpClient.Builder().build()
+
     private val retrofit: Retrofit = Retrofit.Builder()
         .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
         .baseUrl(baseUrl)
-        .client(OkHttpClient.Builder().build())
+        .client(okHttpClient)
         .build()
 
     private val retrofitService: PortfolioApiService by lazy {

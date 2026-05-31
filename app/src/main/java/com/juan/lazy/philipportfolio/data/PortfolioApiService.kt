@@ -5,5 +5,5 @@ import retrofit2.http.GET
 
 interface PortfolioApiService {
     @GET("JohnaDev/portfolio/main/portfolio.json")
-    suspend fun getPortfolio(): PortfolioData
+    suspend fun getPortfolio(): retrofit2.Response<PortfolioData>
 }

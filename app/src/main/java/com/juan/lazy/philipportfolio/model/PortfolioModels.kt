@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PortfolioData(
+    @SerialName("profile")
     val profile: ProfileData,
     @SerialName("technical_skills")
     val technicalSkills: TechnicalSkills,
@@ -12,7 +13,9 @@ data class PortfolioData(
     val featuredProjects: List<ProjectData>,
     @SerialName("professional_experience")
     val professionalExperience: List<ExperienceData>,
+    @SerialName("education")
     val education: List<EducationData>,
+    @SerialName("languages")
     val languages: List<LanguageProficiency>
 )
 
@@ -20,8 +23,11 @@ data class PortfolioData(
 data class ProfileData(
     @SerialName("full_name")
     val fullName: String,
+    @SerialName("title")
     val title: String,
+    @SerialName("location")
     val location: LocationData,
+    @SerialName("contact")
     val contact: ContactData,
     @SerialName("about_me")
     val aboutMe: String
@@ -29,18 +35,23 @@ data class ProfileData(
 
 @Serializable
 data class LocationData(
+    @SerialName("city")
     val city: String,
+    @SerialName("country")
     val country: String
 )
 
 @Serializable
 data class ContactData(
+    @SerialName("email")
     val email: String,
+    @SerialName("phone")
     val phone: String
 )
 
 @Serializable
 data class TechnicalSkills(
+    @SerialName("languages")
     val languages: List<String>,
     @SerialName("frameworks_and_tools")
     val frameworksAndTools: List<String>,
@@ -54,15 +65,21 @@ data class TechnicalSkills(
 
 @Serializable
 data class ProjectData(
+    @SerialName("name")
     val name: String,
+    @SerialName("role")
     val role: String,
     @SerialName("project_url")
     val projectUrl: String,
+    @SerialName("technologies")
     val technologies: List<String>,
+    @SerialName("overview")
     val overview: String,
+    @SerialName("features")
     val features: List<String> = emptyList(),
     @SerialName("key_contributions")
     val keyContributions: List<String>,
+    @SerialName("notes")
     val notes: ProjectNotes? = null
 )
 
@@ -76,22 +93,29 @@ data class ProjectNotes(
 
 @Serializable
 data class ExperienceData(
+    @SerialName("position")
     val position: String,
+    @SerialName("company")
     val company: String,
     @SerialName("employment_period")
     val employmentPeriod: EmploymentPeriod,
+    @SerialName("responsibilities")
     val responsibilities: List<String>
 )
 
 @Serializable
 data class EmploymentPeriod(
+    @SerialName("start")
     val start: String,
+    @SerialName("end")
     val end: String
 )
 
 @Serializable
 data class EducationData(
+    @SerialName("degree")
     val degree: String,
+    @SerialName("institution")
     val institution: String,
     @SerialName("year_graduated")
     val yearGraduated: Int
@@ -99,7 +123,9 @@ data class EducationData(
 
 @Serializable
 data class LanguageProficiency(
+    @SerialName("language")
     val language: String,
+    @SerialName("proficiency")
     val proficiency: String
 )
 

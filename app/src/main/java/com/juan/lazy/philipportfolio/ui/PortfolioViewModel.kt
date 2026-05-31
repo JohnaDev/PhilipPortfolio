@@ -49,4 +49,11 @@ class PortfolioViewModel(
     fun onThemeSelected(theme: AppTheme) {
         _selectedTheme.value = theme
     }
+
+    fun onRefreshTriggered() {
+        // This is a placeholder. Since repository.getPortfolioData() returns a Cold Flow that fetches data on collection,
+        // triggering a "refresh" would normally involve re-collecting or having a trigger flow in the repository.
+        // For now, let's just log it.
+        android.util.Log.e("ViewModelSync", "onRefreshTriggered called")
+    }
 }
