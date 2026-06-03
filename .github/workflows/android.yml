@@ -25,23 +25,23 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build Release App Bundle
-        run: ./gradlew bundleRelease
+      - name: Build Release APK
+        run: ./gradlew assembleRelease
 
-      - name: Sign App Bundle
+      - name: Sign Release APK
         id: sign_app
         uses: r0adkll/sign-android-release@v1
         with:
-          releaseDirectory: app/build/outputs/bundle/release
+          releaseDirectory: app/build/outputs/apk/release
           signingKeyBase64: ${{ secrets.KEYSTORE_BASE64 }}
           alias: ${{ secrets.KEY_ALIAS }}
           keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
 
-      - name: Upload Signed App Bundle
+      - name: Upload Signed Release APK
         uses: actions/upload-artifact@v4
         with:
-          name: porfolio-production-bundle
+          name: porfolio-production-apk
           path: ${{ steps.sign_app.outputs.signedReleaseFile }}
 
       - name: Build Debug APK
