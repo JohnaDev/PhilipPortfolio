@@ -1,10 +1,11 @@
-name: Android CI
+name: Android Production Build
 
 on:
   push:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
+  workflow_dispatch: # Allow manual triggers
 
 jobs:
   build:
@@ -24,20 +25,30 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Build Release App Bundle
+        run: ./gradlew bundleRelease
+
+      - name: Sign App Bundle
+        id: sign_app
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: app/build/outputs/bundle/release
+          signingKeyBase64: ${{ secrets.KEYSTORE_BASE64 }}
+          alias: ${{ secrets.KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+
+      - name: Upload Signed App Bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: porfolio-production-bundle
+          path: ${{ steps.sign_app.outputs.signedReleaseFile }}
+
       - name: Build Debug APK
         run: ./gradlew assembleDebug
 
-      - name: Get Version Info
-        id: get_version
-        run: |
-          VERSION_NAME=$(grep "versionName =" app/build.gradle.kts | awk -F '"' '{print $2}')
-          VERSION_CODE=$(grep "versionCode =" app/build.gradle.kts | awk '{print $3}')
-          # Note: If version is calculated by GitInfo, you might need to extract it differently 
-          # or just use a wildcard for the upload path.
-          echo "file_name=porfolio_${VERSION_NAME}_${VERSION_CODE}.apk" >> $GITHUB_OUTPUT
-
-      - name: Upload APK
+      - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: porfolio-build
+          name: porfolio-debug-apk
           path: app/build/outputs/apk/debug/porfolio_*.apk
