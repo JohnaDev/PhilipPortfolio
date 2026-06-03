@@ -54,3 +54,23 @@ jobs:
         with:
           name: porfolio-debug-apk
           path: app/build/outputs/apk/debug/porfolio_*.apk
+
+      - name: Get Version Name
+        id: get_version
+        run: |
+          VERSION_NAME=$(./gradlew :app:properties -q | grep "^versionName:" | awk '{print $2}')
+          echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        with:
+          tag_name: v${{ steps.get_version.outputs.VERSION_NAME }}
+          name: Release v${{ steps.get_version.outputs.VERSION_NAME }}
+          draft: false
+          prerelease: false
+          files: |
+            ${{ steps.sign_app.outputs.signedReleaseFile }}
+            app/build/outputs/apk/debug/porfolio_*.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
