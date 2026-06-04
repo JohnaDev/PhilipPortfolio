@@ -77,18 +77,6 @@ object PortfolioProvider {
             note = "Enterprise only application developed for F45 studios and internal use - not available on the Google Play Store."
         ),
         Project(
-            title = "Perfect Home Health",
-            role = "Android Developer",
-            technologies = "Java, xml, Retrofit, SQLite, JSON",
-            description = "A healthcare management app used by home health professionals for scheduling, documentation, and compliance tracking.",
-            keyContributions = listOf(
-                "Built modules for patient data entry, scheduling, and synchronization.",
-                "Implemented secure RESTful API integration.",
-                "Ensured HIPAA compliance and reliability for field operations."
-            ),
-            link = "https://play.google.com/store/apps/details?id=com.noteefied.perfect"
-        ),
-        Project(
             title = "Eagle Quote",
             role = "Senior Android Developer",
             technologies = "Java, xml, Kotlin, MVVM, Retrofit",

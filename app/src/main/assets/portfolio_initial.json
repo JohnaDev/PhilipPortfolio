@@ -102,24 +102,6 @@
       ]
     },
     {
-      "name": "Perfect Home Health",
-      "role": "Android Developer",
-      "project_url": "https://play.google.com/store/apps/details?id=com.noteefied.perfect",
-      "technologies": [
-        "Java",
-        "XML",
-        "Retrofit",
-        "SQLite",
-        "JSON"
-      ],
-      "overview": "A healthcare management app used by home health professionals for scheduling, documentation, and compliance tracking.",
-      "key_contributions": [
-        "Built modules for patient data entry, scheduling, and synchronization",
-        "Implemented secure RESTful API integrations",
-        "Ensured HIPAA compliance and reliability for field operations"
-      ]
-    },
-    {
       "name": "Eagle Quote",
       "role": "Senior Android Developer",
       "project_url": "https://play.google.com/store/apps/details?id=blackfintechnology.eaglequote",
