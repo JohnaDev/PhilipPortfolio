@@ -2,7 +2,6 @@ import com.juan.lazy.philipportfolio.buildsrc.GitInfo
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kotlin.ksp)
@@ -10,7 +9,7 @@ plugins {
 
 android {
     namespace = "com.juan.lazy.philipportfolio"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.juan.lazy.philipportfolio"
@@ -20,12 +19,6 @@ android {
         versionName = GitInfo.getVersionName()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-    applicationVariants.all {
-        outputs.all {
-            val output = this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
-            output.outputFileName = "porfolio_${versionName}_${versionCode}.apk"
-        }
     }
     buildTypes {
         release {
@@ -46,11 +39,23 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
         isCoreLibraryDesugaringEnabled = true
     }
-    kotlinOptions {
-        jvmTarget = "11"
+
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+        }
     }
     buildFeatures {
         compose = true
+    }
+
+}
+
+androidComponents {
+    onVariants { variant ->
+        variant.outputs.forEach { output ->
+            output.outputFileName.set("porfolio_${GitInfo.getVersionName()}_${GitInfo.getGitCommitCount()}.apk")
+        }
     }
 }
 
