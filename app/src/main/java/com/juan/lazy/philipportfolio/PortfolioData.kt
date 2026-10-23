@@ -22,7 +22,7 @@ object PortfolioProvider {
     val role = "Android Developer"
     val location = "Davao City, Philippines"
     val email = "johnphilipagustino@gmail.com"
-    val phone = "+63 9399353004"
+    val phone = "+63 949 701 3510"
 
     val aboutMe =
         "Experienced Android Developer with a strong background in building and maintaining native Android applications and mobile games. Skilled in Kotlin, Java, Jetpack Compose, and modern Android frameworks. Passionate about crafting high quality, maintainable, and user centered apps from healthcare solutions to mobile games."
